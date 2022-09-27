@@ -12,10 +12,15 @@ export default class App extends React.Component{
   }
 
   loadPosts = async () => {
-    const PostsGet = fetch("https://jsonplaceholder.typicode.com/posts");
-    const [posts] = await Promise.all([PostsGet]);
-    const PostsJson = await posts.json();
-    this.setState({posts: PostsJson})
+    const postsGet = fetch("https://jsonplaceholder.typicode.com/posts");
+    const photosResponse = fetch("https://jsonplaceholder.typicode.com/photos")
+    const [posts,photos] = await Promise.all([postsGet, photosResponse]);
+    const postsJson = await posts.json();
+    const photosJson = await photos.json();
+    const PostsAndPhotos = postsJson.map((posts,index)=> {
+      return {...posts, cover: photosJson[index].url}
+    })
+    this.setState({posts: PostsAndPhotos})
   }
   
   render(){
@@ -23,14 +28,20 @@ export default class App extends React.Component{
     return(
       <>
       <GlobalStyle />
-        <div>
-          {posts.map((item) => (
-            <S.Poster key={item.key} >
-              <h2>{item.title}</h2>
-              <p>{item.body}</p>
-            </S.Poster>
-          ))}
-        </div>
+      <S.Container>
+        
+          <S.Posts>
+            {posts.map((item) => (
+              <S.Post key={item.key} >
+                <img src={item.cover} alt={item.title}/>
+                <S.PostCont>
+                  <h1>{item.title}</h1>
+                  <p>{item.body}</p>
+                </S.PostCont>
+              </S.Post>
+            ))}
+          </S.Posts>
+      </S.Container>
       </>
     )
   }
