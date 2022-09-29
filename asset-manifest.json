@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/Json_holder/static/js/main.789b33ee.js",
+    "main.js": "/Json_holder/static/js/main.9cafe36f.js",
     "index.html": "/Json_holder/index.html",
-    "main.789b33ee.js.map": "/Json_holder/static/js/main.789b33ee.js.map"
+    "main.9cafe36f.js.map": "/Json_holder/static/js/main.9cafe36f.js.map"
   },
   "entrypoints": [
-    "static/js/main.789b33ee.js"
+    "static/js/main.9cafe36f.js"
   ]
 }
