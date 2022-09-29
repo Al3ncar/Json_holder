@@ -1,47 +1,31 @@
 import React from "react"
 import * as S from "./style"
 import GlobalStyle from "./style";
-
-
+import Map from "./components/mapfiltros/index"
+import { Posts } from "./components/Posts";
+import { loadPosts } from "./components/utils/load-posts";
 export default class App extends React.Component{
-  state={
-    posts:[]
-  }
-  componentDidMount(){
-    this.loadPosts();
+   
+  state = { posts:[]}
+
+  async componentDidMount(){
+    const PostsAndPhotos = await loadPosts();
+    this.setState({posts: PostsAndPhotos})
+
   }
 
   loadPosts = async () => {
-    const postsGet = fetch("https://jsonplaceholder.typicode.com/posts");
-    const photosResponse = fetch("https://jsonplaceholder.typicode.com/photos")
-    const [posts,photos] = await Promise.all([postsGet, photosResponse]);
-    const postsJson = await posts.json();
-    const photosJson = await photos.json();
-    const PostsAndPhotos = postsJson.map((posts,index)=> {
-      return {...posts, cover: photosJson[index].url}
-    })
-    this.setState({posts: PostsAndPhotos})
+   
   }
   
   render(){
     const {posts} = this.state
     return(
       <>
-      <GlobalStyle />
-      <S.Container>
-        
-          <S.Posts>
-            {posts.map((item) => (
-              <S.Post key={item.key} >
-                <img src={item.cover} alt={item.title}/>
-                <S.PostCont>
-                  <h1>{item.title}</h1>
-                  <p>{item.body}</p>
-                </S.PostCont>
-              </S.Post>
-            ))}
-          </S.Posts>
-      </S.Container>
+        <GlobalStyle />
+        <S.Container>
+          <Posts posts={posts }/>
+        </S.Container>
       </>
     )
   }
